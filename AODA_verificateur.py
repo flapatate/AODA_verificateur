@@ -23,7 +23,7 @@ Instructions:
 1- Placer le fichier AODA_verificateur.exe dans le dossier
 où se trouvent les fichiers à vérifier.
 2- Double cliquer sur le fichier AODA_verificateur.exe.
-3- Consulter le rapport sur la console.
+3- Consulter le rapport.txt.
 
 
 ###
@@ -103,17 +103,23 @@ path = ".\\"
 
 listing = os.listdir(path)
 
+rapport = open('rapport.txt', "w", encoding='utf-8')
 
 def main():
     
     for infile in listing:        
      
         if re.search('S\d\d\d\d\d\d\d\.txt$', infile):
-            print ("\n***********************\nANALYSE DU FICHIER :", infile)
-            print ("***********************\nPROBLÈMES DÉTECTÉS :\n")
+
             file = open(os.path.join(path,infile),'r', encoding='utf-8')
             
+
+            rapport.write("\n\n***********************\nANALYSE DU FICHIER : " + str(infile))
+            rapport.write("\n***********************\n\nPROBLÈMES DÉTECTÉS :\n")
+            
             verification(file,infile)
+            file.close()
+        
 
 def verification(texte,infile):    
     #   new_file = open(os.path.join(path,infile+"_propre.txt"),'w')   
@@ -144,14 +150,14 @@ def verification(texte,infile):
                         
             if paragraphe.count("[") != paragraphe.count("]"):
                 crochet_manquant += 1
-                print("- Manque un crochet au paragraphe ligne " + str(no_ligne)
+                rapport.write("\n- Manque un crochet au paragraphe ligne " + str(no_ligne)
                 + ": \n" + paragraphe)
             
             paragraphe = ""
             
             if ligne_vide > 1:  #DEUX LIGNES VIDES
 
-                print("- Deux lignes vides de suite à la ligne " + str(no_ligne)
+                rapport.write("\n- Deux lignes vides de suite à la ligne " + str(no_ligne)
                 + "\n")                
                 
                 double_retour += 1
@@ -163,33 +169,32 @@ def verification(texte,infile):
             
             if len(line) > 39:
                 ligne_longue += 1
-                print("- Ligne trop longue à la ligne " + str(no_ligne)
-                + ": \n" + line)
+                rapport.write("\n- Ligne trop longue à la ligne " + str(no_ligne) + ": \n" + line)
             
             if ligne_vide > 0:
                 if not re.search("^\[", line):
                     crochet_depart += 1
-                    print("- Manque crochet ou etiquette au debut de la ligne "
+                    rapport.write("\n- Manque crochet ou etiquette au debut de la ligne "
                     + str(no_ligne) + ": \n" + line)
             
             if re.search(" $", line):
                 espace_superflu += 1
-                print("- Espace superflu à la fin de la ligne " + str(no_ligne)
+                rapport.write("\n- Espace superflu à la fin de la ligne " + str(no_ligne)
                 + ": \n" + line)
                 
             if re.search("\*", line):
                 asterisque += 1
-                print("- Présence d'un astérisque à la ligne " + str(no_ligne)
+                rapport.write("\n- Présence d'un astérisque à la ligne " + str(no_ligne)
                 + ": \n" + line)
                 
             if re.search("^\-", line):
                 tiret += 1
-                print("- Présence d'un tiret à la ligne " + str(no_ligne)
+                rapport.write("\n- Présence d'un tiret à la ligne " + str(no_ligne)
                 + ": \n" + line)
             
             if re.search("  ", line):
                 double_espace += 1
-                print("- Présence d'un double espace à la ligne " + str(no_ligne)
+                rapport.write("\n- Présence d'un double espace à la ligne " + str(no_ligne)
                 + ": \n" + line)            
             
             etiquette = re.search("^\[(.*)\:\]$", line)
@@ -201,29 +206,30 @@ def verification(texte,infile):
             
             paragraphe = paragraphe + line
    
-    print("\nLISTE DES ÉTIQUETTES : \n")
-    print(sorted(etiquettes))
+    rapport.write("\nLISTE DES ÉTIQUETTES : \n")
+    rapport.write(str(sorted(etiquettes)))
     
-    print("\n\nRÉSUMÉ DES PROBLÈMES DÉTECTÉS :")
+    rapport.write("\n\nRÉSUMÉ DES PROBLÈMES DÉTECTÉS :")
     if espace_superflu:
-        print("Espaces superflus en fin de ligne : " + str(espace_superflu))
+        rapport.write("\nEspaces superflus en fin de ligne : " + str(espace_superflu))
     if double_retour:
-        print("Doubles lignes vides : " + str(double_retour))
+        rapport.write("\nDoubles lignes vides : " + str(double_retour))
     if crochet_manquant:
-        print("Crochets manquants : " + str(crochet_manquant))
+        rapport.write("\nCrochets manquants : " + str(crochet_manquant))
     if crochet_depart:
-        print("Étiquettes/crochets manquants début paragraphe : " + str(crochet_depart))
+        rapport.write("\nÉtiquettes/crochets manquants début paragraphe : " + str(crochet_depart))
     if asterisque:
-        print("Astérisques : " + str(asterisque))
+        rapport.write("\nAstérisques : " + str(asterisque))
     if tiret:
-        print("Tirets : " + str(tiret))
+        rapport.write("\nTirets : " + str(tiret))
     if double_espace:
-        print("Doubles espaces : " + str(double_espace))
+        rapport.write("\nDoubles espaces : " + str(double_espace))
     if ligne_longue:
-        print("Lignes trop longues : " + str(ligne_longue))
+        rapport.write("\nLignes trop longues : " + str(ligne_longue))
       
     
     
 main()
+rapport.close()
 
-input("Press Enter to continue...")
+#input("Press Enter to continue...")
