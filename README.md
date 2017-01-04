@@ -1,5 +1,3 @@
-# AODA_verificateur
-
 Ce programe en Python analyse les fichiers aoda (S0000000.txt)
 qui sont placés dans le dossier où il se trouve.
 Il détermine la présence d'éléments fautifs
@@ -23,7 +21,7 @@ Instructions:
 1- Placer le fichier AODA_verificateur.exe dans le dossier
 où se trouvent les fichiers à vérifier.
 2- Double cliquer sur le fichier AODA_verificateur.exe.
-3- Consulter le rapport sur la console.
+3- Consulter le rapport.txt.
 
 
 ###
