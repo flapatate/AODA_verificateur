@@ -15,8 +15,8 @@ des étiquettes dans le fichier, de manière
 - Doubles espaces entre des mots
 - Présence d'un astérisque
 - Présence d'un tiret
-- Autant de crochets ouverts que de fermés par paragraphe
-- Chaque paragraphe doit débuter par une étiquette (un corchet ouvert)
+- Pas autant de crochets ouverts que de fermés par paragraphe
+- Le paragraphe ne débute pas par une étiquette (un corchet ouvert)
 - Plusieurs retours de ligne de suite
 
 Instructions:
